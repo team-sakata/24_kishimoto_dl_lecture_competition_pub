@@ -1,3 +1,18 @@
+defaults:
+  - _self_
+
+# Training parameters
+seed: 42
+batch_size: 64
+epochs: 20
+lr: 0.001
+resample_rate: 200
+num_workers: 4  # 追加
+data_dir: "data"  # 追加
+device: "cuda"  # or "cpu"
+
+
+
 #batch_size: 128
 #epochs: 30
 #lr: 0.001
@@ -100,7 +115,7 @@
 
 
 #基準をクリアしたコード
-# config.yaml
+#config.yaml
 #defaults:
 #  - _self_
 
@@ -120,17 +135,17 @@
 #lowcut: 0.5  # フィルタの低カットオフ周波数
 #weight_decay: 0.000
 
-defaults:
-  - _self_
+#defaults:
+#  - _self_
 
 # Training parameters
-seed: 42
-batch_size: 64
-epochs: 20
-lr: 0.001
-resample_rate: 200
-num_workers: 4  # 追加
-data_dir: "data"  # 追加
-device: "cuda"  # or "cpu"
+#seed: 42
+#batch_size: 64
+#epochs: 20
+#lr: 0.001
+#resample_rate: 200
+#num_workers: 4  # 追加
+#data_dir: "data"  # 追加
+#device: "cuda"  # or "cpu"
 
 

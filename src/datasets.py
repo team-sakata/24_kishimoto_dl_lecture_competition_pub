@@ -4,6 +4,78 @@ import torch
 from typing import Tuple
 from termcolor import cprint
 
+import os
+import numpy as np
+import torch
+from typing import Tuple
+from termcolor import cprint
+from scipy.interpolate import interp1d
+
+class ThingsMEGDataset(torch.utils.data.Dataset):
+    def __init__(self, split: str, data_dir: str = "data", resample_rate: int = 200, augment: bool = False) -> None:
+        super().__init__()
+        
+        assert split in ["train", "val", "test"], f"Invalid split: {split}"
+        self.split = split
+        self.num_classes = 1854
+        self.resample_rate = resample_rate
+        self.augment = augment
+        
+        self.X = torch.load(os.path.join(data_dir, f"{split}_X.pt")).float()
+        self.subject_idxs = torch.load(os.path.join(data_dir, f"{split}_subject_idxs.pt"))
+        
+        if split in ["train", "val"]:
+            self.y = torch.load(os.path.join(data_dir, f"{split}_y.pt"))
+            assert len(torch.unique(self.y)) == self.num_classes, "Number of classes do not match."
+        
+        # リサンプリング
+        self.X = self._resample_data(self.X)
+        
+        # データ拡張
+        if self.augment:
+            self.X = self._augment_data(self.X)
+
+    def __len__(self) -> int:
+        return len(self.X)
+
+    def __getitem__(self, i):
+        if hasattr(self, "y"):
+            return self.X[i], self.y[i], self.subject_idxs[i]
+        else:
+            return self.X[i], self.subject_idxs[i]
+        
+    @property
+    def num_channels(self) -> int:
+        return self.X.shape[1]
+    
+    @property
+    def seq_len(self) -> int:
+        return self.X.shape[2]
+
+    def _resample_data(self, data: torch.Tensor) -> torch.Tensor:
+        current_rate = 200
+        target_samples = int(self.resample_rate * (data.shape[2] / current_rate))
+        
+        resampled_data = np.array([self._resample_single(x.numpy(), target_samples) for x in data])
+        
+        return torch.tensor(resampled_data).float()
+
+    def _resample_single(self, x, target_samples):
+        time_points = np.linspace(0, 1, x.shape[1])
+        interp_func = interp1d(time_points, x, kind='linear', axis=1)
+        new_time_points = np.linspace(0, 1, target_samples)
+        return interp_func(new_time_points)
+
+    def _augment_data(self, data: torch.Tensor) -> torch.Tensor:
+        noise_factor = 0.1
+        augmented_data = data + noise_factor * torch.randn_like(data)
+        return augmented_data
+
+
+
+
+
+
 '''
 class ThingsMEGDataset(torch.utils.data.Dataset):
     def __init__(self, split: str, data_dir: str = "data") -> None:
@@ -1002,8 +1074,8 @@ class ThingsMEGDataset(torch.utils.data.Dataset):
 
 """
 
-
-'''リサンプリング、ベースライン補正、スケーリングを実装
+'''
+#リサンプリング、ベースライン補正、スケーリングを実装
 import os
 import numpy as np
 import torch
@@ -1087,8 +1159,8 @@ class ThingsMEGDataset(torch.utils.data.Dataset):
         return torch.stack(scaled_data)
 '''
 
-
-'''基準をクリアしたコード
+'''
+#基準をクリアしたコード
 import os
 import numpy as np
 import torch
@@ -1254,6 +1326,7 @@ class ThingsMEGDataset(torch.utils.data.Dataset):
         return augmented_data
 '''
 
+'''
 import os
 import numpy as np
 import torch
@@ -1348,3 +1421,4 @@ class ThingsMEGDataset(torch.utils.data.Dataset):
             augmented_data.append(x + noise)
         
         return torch.stack(augmented_data)
+'''
