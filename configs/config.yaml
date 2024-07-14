@@ -1,13 +1,136 @@
-batch_size: 128
-epochs: 80
-lr: 0.001
+#batch_size: 128
+#epochs: 30
+#lr: 0.001
 
-device: cuda:0
-num_workers: 4
-seed: 1234
-use_wandb: False
+#device: cuda:0
+#num_workers: 4
+#seed: 1234
+#use_wandb: False
 
-data_dir: data
+#data_dir: data
 
 # Evaluation
-model_path: 
+#model_path: 
+
+
+#batch_size: 128
+#epochs: 6
+#vae_epochs: 10  # VAEのエポック数を追加
+#lr: 0.001
+
+#device: cuda:0
+#num_workers: 4
+#seed: 1234
+#use_wandb: False
+
+#data_dir: data
+
+# Evaluation
+#model_path:
+
+
+
+#batch_size: 128
+#epochs: 10
+#lr: 0.001
+#device: cuda:0
+#num_workers: 4
+#seed: 1234
+#use_wandb: False
+#data_dir: data
+#dropout_rate: 0.5  # dropout_rateを追加
+#weight_decay: 1e-5  # L2正則化のためのweight decayを追加
+
+
+
+#batch_size: 128
+#epochs: 6
+#lr: 0.001
+#dropout_rate: 0.5
+#weight_decay: 1e-4
+
+#device: cuda:0
+#num_workers: 4
+#seed: 1234
+#use_wandb: False
+
+#data_dir: data
+
+# Evaluation
+#model_path: 
+
+#early_stopping_patience: 5
+
+
+#batch_size: 128
+#epochs: 10
+#lr: 0.001
+#weight_decay: 0.0005
+
+#device: cuda:0
+#num_workers: 4
+#seed: 1234
+#use_wandb: False
+
+#data_dir: data
+
+#dropout_rate: 0.5
+#early_stopping_patience: 5
+
+
+#これは動く
+#batch_size: 128
+#epochs: 30
+#lr: 0.001
+#dropout_rate: 0.5
+#weight_decay: 1e-4
+
+#device: cuda:0
+#num_workers: 4
+#seed: 1234
+#use_wandb: False
+
+#data_dir: data
+
+# Evaluation
+#model_path: 
+
+#early_stopping_patience: 5
+
+
+
+#基準をクリアしたコード
+# config.yaml
+#defaults:
+#  - _self_
+
+#seed: 42
+#data_dir: /disks/qnap3/users/24-kosaku/24-Kosaku/dl/2024_kosaku_dl/data
+#batch_size: 128
+#num_workers: 4
+#epochs: 20
+#lr: 0.001
+#device: "cuda"
+#use_wandb: true
+#resample_rate: 100  # リサンプリングレートをここで設定
+#dropout_rate: 0.5
+
+#フィルタリングで追加
+#highcut: 40.0  # フィルタの高カットオフ周波数
+#lowcut: 0.5  # フィルタの低カットオフ周波数
+#weight_decay: 0.000
+
+defaults:
+  - _self_
+
+# Training parameters
+seed: 42
+batch_size: 64
+epochs: 20
+lr: 0.001
+resample_rate: 200
+num_workers: 4  # 追加
+data_dir: "data"  # 追加
+device: "cuda"  # or "cpu"
+
+
